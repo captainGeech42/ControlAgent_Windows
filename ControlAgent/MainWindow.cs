@@ -81,5 +81,11 @@ namespace ControlAgent
 
             label_statusdetails.Text = "Not Running";
         }
+
+        private void button_about_Click(object sender, EventArgs e)
+        {
+            About about = new About();
+            about.Show();
+        }
     }
 }

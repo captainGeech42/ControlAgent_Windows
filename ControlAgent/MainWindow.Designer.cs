@@ -37,6 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.portSelector = new System.Windows.Forms.NumericUpDown();
             this.label_statuslabel = new System.Windows.Forms.Label();
+            this.button_about = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.portSelector)).BeginInit();
             this.SuspendLayout();
             // 
@@ -75,7 +76,7 @@
             // 
             this.label_statusdetails.AutoSize = true;
             this.label_statusdetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_statusdetails.Location = new System.Drawing.Point(121, 9);
+            this.label_statusdetails.Location = new System.Drawing.Point(112, 9);
             this.label_statusdetails.Name = "label_statusdetails";
             this.label_statusdetails.Size = new System.Drawing.Size(95, 17);
             this.label_statusdetails.TabIndex = 3;
@@ -131,11 +132,22 @@
             this.label_statuslabel.TabIndex = 8;
             this.label_statuslabel.Text = "Current Status:";
             // 
+            // button_about
+            // 
+            this.button_about.Location = new System.Drawing.Point(307, 69);
+            this.button_about.Name = "button_about";
+            this.button_about.Size = new System.Drawing.Size(69, 23);
+            this.button_about.TabIndex = 9;
+            this.button_about.Text = "About";
+            this.button_about.UseVisualStyleBackColor = true;
+            this.button_about.Click += new System.EventHandler(this.button_about_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(388, 108);
+            this.Controls.Add(this.button_about);
             this.Controls.Add(this.label_statuslabel);
             this.Controls.Add(this.portSelector);
             this.Controls.Add(this.label1);
@@ -164,6 +176,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown portSelector;
         private System.Windows.Forms.Label label_statuslabel;
+        private System.Windows.Forms.Button button_about;
     }
 }
 
