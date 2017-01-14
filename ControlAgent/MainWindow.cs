@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace ControlAgent
 {
@@ -84,6 +78,8 @@ namespace ControlAgent
             ipDropdown.Enabled = true;
             portSelector.Enabled = true;
             button_disable.Enabled = false;
+
+            label_statusdetails.Text = "Not Running";
         }
     }
 }
