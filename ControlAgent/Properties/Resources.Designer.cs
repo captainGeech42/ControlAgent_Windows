@@ -59,5 +59,14 @@ namespace ControlAgent.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Running.
+        /// </summary>
+        internal static string MainWindow_button_disable_Click_Not_Running {
+            get {
+                return ResourceManager.GetString("MainWindow_button_disable_Click_Not_Running", resourceCulture);
+            }
+        }
     }
 }

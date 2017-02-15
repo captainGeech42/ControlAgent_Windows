@@ -4,13 +4,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace ControlAgent
 {
     public partial class MainWindow : Form
     {
-        private Logger logger;
-        //private Thread serverThread;
+        private Logger _logger;
+        private Thread _serverThread;
+        private Server _server;
 
         public MainWindow()
         {
@@ -19,7 +21,7 @@ namespace ControlAgent
 
             this.Load += MainWindow_Load;
 
-            logger = new Logger();
+            _logger = new Logger();
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -53,39 +55,58 @@ namespace ControlAgent
         {
             string ipadr = ipDropdown.SelectedItem.ToString();
             Int32 port = Int32.Parse(portSelector.Value.ToString());
-            Server server = new ControlAgent.Server(ipadr, port);
+            _server = new ControlAgent.Server(ipadr, port);
             //serverThread = new Thread(server.runTcpServer);
             //serverThread.IsBackground = true;
             //serverThread.Start();
-            logger.LogState(Logger.State.ENABLED, ipadr, port);
+            _server.Start();
+            _logger.LogState(Logger.State.Enabled, ipadr, port);
 
-            button_disable.Enabled = true;
-            ipDropdown.Enabled = false;
-            portSelector.Enabled = false;
-            button_enable.Enabled = false;
+            ToggleUiState(State.Disable);
 
-            label_statusdetails.Text = "Running on " + ipadr + ":" + port;
-            //await Task.Run(() => server.runAsyncTcpServer());
+            label_statusdetails.Text = @"Running on " + ipadr + @":" + port;
         }
 
         private void button_disable_Click(object sender, EventArgs e)
         {
-            //serverThread.Join();
             //serverThread.Abort();
-            logger.LogState(Logger.State.DISABLED);
+            _server.Stop();
+            _logger.LogState(Logger.State.Disabled);
 
-            button_enable.Enabled = true;
-            ipDropdown.Enabled = true;
-            portSelector.Enabled = true;
-            button_disable.Enabled = false;
+            ToggleUiState(State.Enable);
 
-            label_statusdetails.Text = "Not Running";
+            label_statusdetails.Text = @"Not Running";
         }
 
         private void button_about_Click(object sender, EventArgs e)
         {
             About about = new About();
             about.Show();
+        }
+
+        private void ToggleUiState(State state)
+        {
+            switch (state)
+            {
+                case State.Enable:
+                    button_enable.Enabled = true;
+                    ipDropdown.Enabled = true;
+                    portSelector.Enabled = true;
+                    button_disable.Enabled = false;
+                    break;
+                case State.Disable:
+                    button_disable.Enabled = true;
+                    ipDropdown.Enabled = false;
+                    portSelector.Enabled = false;
+                    button_enable.Enabled = false;
+                    break;
+            }
+        }
+
+        private enum State
+        {
+            Enable,
+            Disable
         }
     }
 }
