@@ -12,7 +12,7 @@ namespace ControlAgent
     {
         private Logger _logger;
         private Thread _serverThread;
-        private Server _server;
+        private Server_old _server;
 
         public MainWindow()
         {
@@ -55,8 +55,8 @@ namespace ControlAgent
         {
             string ipadr = ipDropdown.SelectedItem.ToString();
             Int32 port = Int32.Parse(portSelector.Value.ToString());
-            _server = new ControlAgent.Server(ipadr, port);
-            //serverThread = new Thread(server.runTcpServer);
+            _server = new ControlAgent.Server_old(ipadr, port);
+            //serverThread = new Thread(server.RunTcpServer);
             //serverThread.IsBackground = true;
             //serverThread.Start();
             _server.Start();
