@@ -4,13 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace ControlAgent
 {
     public partial class MainWindow : Form
     {
-        private Logger _logger;
+        private readonly Logger _logger;
         private Server _server;
 
         public MainWindow()
@@ -32,7 +31,7 @@ namespace ControlAgent
         private List<string> GetIPv4Address()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
-            List<String> ipAddresses = new List<String>();
+            List<string> ipAddresses = new List<string>();
             foreach (var ip in host.AddressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
@@ -74,10 +73,10 @@ namespace ControlAgent
             label_statusdetails.Text = @"Not Running";
         }
 
-        private void button_about_Click(object sender, EventArgs e)
+        private void button_config_Click(object sender, EventArgs e)
         {
-            About about = new About();
-            about.Show();
+            Config config = new Config();
+            config.ShowDialog();
         }
 
         private void ToggleUiState(State state)
