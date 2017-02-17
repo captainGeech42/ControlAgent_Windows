@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace ControlAgent
 {
     class Commands
     {
-
         public static List<String> RunCommand(Command command)
         {
             Logger logger = new Logger();
@@ -22,6 +22,7 @@ namespace ControlAgent
                 case Command.Restart:
                     return RestartComputer();
                 default:
+                    //execution won't get here, b/c exception is thrown parsing the command enum if it is invalid
                     return new List<string>() { "Command Not Found" };
             }
             
@@ -33,8 +34,8 @@ namespace ControlAgent
         /// <returns>List with status</returns>
         private static List<String> SleepComputer()
         {
-            //Application.SetSuspendState(PowerState.Suspend, true, true);
-            return new List<string>() { "SLEEP Command Executed Successfully" };
+            Application.SetSuspendState(PowerState.Suspend, true, true);
+            return new List<string>() { "Sleep Command Executed Successfully" };
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace ControlAgent
         private static List<String> ShutdownComputer()
         {
             Process.Start("timeout 3 > NUL && shutdown -s -t 0");
-            return new List<string>() { "SHUTDOWN Command Executed Successfully" };
+            return new List<string>() { "Shutdown Command Executed Successfully" };
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace ControlAgent
         private static List<String> RestartComputer()
         {
             Process.Start("timeout 3 > NUL && shutdown -r -t 0");
-            return new List<string>() { "RESTART Command Executed Successfully" };
+            return new List<string>() { "Restart Command Executed Successfully" };
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace ControlAgent
         /// <returns>List with status, and then process name and PID, delimited with a |</returns>
         private static List<string> GetProcessList()
         {
-            List<string> processes = new List<string>() { "GETPROC Command Executed Successfully" };
+            List<string> processes = new List<string>() { "Getproc Command Executed Successfully" };
             Process[] processArray = Process.GetProcesses();
             foreach (Process proc in processArray)
             {

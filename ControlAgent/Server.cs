@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -19,9 +20,16 @@ namespace ControlAgent
         private StreamReader _reader;
         private StreamWriter _writer;
 
+        private readonly List<string> _apiKeys = new List<string>()
+        {
+            //TODO this feels really sketchy, most definitely can and should be done better
+            "testAPIkey1234"
+        };
+
         public Server(string ip, int port)
         {
             _listener = new TcpListener(IPAddress.Parse(ip), port);
+            _logger = new Logger();
         }
 
         public void Start()
@@ -45,7 +53,45 @@ namespace ControlAgent
                 _listener.Start();
                 DoBeginAcceptTcpClient(_listener);
                 _writer = new StreamWriter(_client.GetStream());
-                _writer.Write("received message");
+                _reader = new StreamReader(_client.GetStream());
+                try
+                {
+                    //Client has requested an action
+                    string requestRaw = _reader.ReadLine();
+                    string[] delim = { @"\|/" };
+                    string[] request = requestRaw.Split(delim, StringSplitOptions.None);
+
+                    //Check if API key is valid
+                    if (_apiKeys.Contains(request[0]))
+                    {
+                        //Valid API key sent
+                        Commands.Command command = (Commands.Command)Enum.Parse(typeof(Commands.Command), request[1]);
+                        List<string> output = Commands.RunCommand(command);
+                        foreach (string line in output)
+                        {
+                            _writer.WriteLine(line);
+                        }
+
+                        //Send data back to client
+                        _writer.Flush();
+                    }
+                    else
+                    {
+                        //API key was not found in the list
+                        _writer.WriteLine("API Key Not Valid");
+
+                        //Send data back to client
+                        _writer.Flush();
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError("Invalid command received");
+                    _writer.Write("Invalid command received");
+                    _writer.Flush();
+                    _client.Close();
+                    break;
+                }
                 _writer.Flush();
                 _client.Close();
                 _listener.Stop();
