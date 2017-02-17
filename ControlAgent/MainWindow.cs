@@ -11,8 +11,7 @@ namespace ControlAgent
     public partial class MainWindow : Form
     {
         private Logger _logger;
-        private Thread _serverThread;
-        private Server_old _server;
+        private Server _server;
 
         public MainWindow()
         {
@@ -27,7 +26,7 @@ namespace ControlAgent
         private void MainWindow_Load(object sender, EventArgs e)
         {
             ipDropdown.DataSource = new BindingSource(GetIPv4Address(), null);
-            label_statusdetails.Text = "Not Running";
+            label_statusdetails.Text = @"Not Running";
         }
 
         private List<string> GetIPv4Address()
@@ -55,10 +54,7 @@ namespace ControlAgent
         {
             string ipadr = ipDropdown.SelectedItem.ToString();
             Int32 port = Int32.Parse(portSelector.Value.ToString());
-            _server = new ControlAgent.Server_old(ipadr, port);
-            //serverThread = new Thread(server.RunTcpServer);
-            //serverThread.IsBackground = true;
-            //serverThread.Start();
+            _server = new Server(ipadr, port);
             _server.Start();
             _logger.LogState(Logger.State.Enabled, ipadr, port);
 
