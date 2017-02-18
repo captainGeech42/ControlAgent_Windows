@@ -12,21 +12,21 @@ namespace ControlAgent
 {
     public partial class Config : Form
     {
-        private List<string> apiKeys;
+        private List<string> _apiKeys;
 
         public Config()
         {
             InitializeComponent();
-            apiKeys = new List<string>()
+            _apiKeys = new List<string>()
             {
                 "testAPIkey1234"
             };
-            populateKeyList();
+            PopulateKeyList();
         }
 
         private void button_add_new_api_key_Click(object sender, EventArgs e)
         {
-            apiKeys.Add(new_api_key.Text);
+            _apiKeys.Add(new_api_key.Text);
         }
 
         private void button_remove_api_key_Click(object sender, EventArgs e)
@@ -34,9 +34,9 @@ namespace ControlAgent
 
         }
 
-        private void populateKeyList()
+        private void PopulateKeyList()
         {
-            foreach (string key in apiKeys)
+            foreach (string key in _apiKeys)
             {
                 api_key_list.Items.Add(key);
             }
