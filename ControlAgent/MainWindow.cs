@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ControlAgent
@@ -11,6 +13,8 @@ namespace ControlAgent
     {
         private readonly Logger _logger;
         private Server _server;
+        private NotifyIcon _notifyIcon;
+        private Assembly _assembly;
 
         public MainWindow()
         {
@@ -18,14 +22,39 @@ namespace ControlAgent
             InitializeComponent();
 
             this.Load += MainWindow_Load;
+            this.Resize += MainWindow_Resize;
 
             _logger = new Logger();
+
+            _assembly = Assembly.GetExecutingAssembly();
+
+            _notifyIcon = new NotifyIcon();
+            _notifyIcon.Icon = new Icon(_assembly.GetManifestResourceStream(@"ControlAgent.control_icon_base.ico"));
+            _notifyIcon.Text = @"ControlAgent";
+            _notifyIcon.Visible = false;
+            _notifyIcon.Click += NotifyIcon_Click;
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
             ipDropdown.DataSource = new BindingSource(GetIPv4Address(), null);
             label_statusdetails.Text = @"Not Running";
+        }
+
+        private void MainWindow_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                _notifyIcon.Visible = true;
+                this.Hide();
+            }
+        }
+
+        private void NotifyIcon_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            _notifyIcon.Visible = false;
         }
 
         private List<string> GetIPv4Address()
