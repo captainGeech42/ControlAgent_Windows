@@ -51,20 +51,26 @@ namespace ControlAgent
 
         private void button_enable_Click(object sender, EventArgs e)
         {
-            string ipadr = ipDropdown.SelectedItem.ToString();
-            Int32 port = Int32.Parse(portSelector.Value.ToString());
-            _server = new Server(ipadr, port);
-            _server.Start();
-            _logger.LogState(Logger.State.Enabled, ipadr, port);
+            if (Config.ApiKeyExists())
+            {
+                string ipadr = ipDropdown.SelectedItem.ToString();
+                Int32 port = Int32.Parse(portSelector.Value.ToString());
+                _server = new Server(ipadr, port);
+                _server.Start();
+                _logger.LogState(Logger.State.Enabled, ipadr, port);
 
-            ToggleUiState(State.Disable);
+                ToggleUiState(State.Disable);
 
-            label_statusdetails.Text = @"Running on " + ipadr + @":" + port;
+                label_statusdetails.Text = @"Running on " + ipadr + @":" + port;
+            }
+            else
+            {
+                label_statusdetails.Text = @"Error: No API Keys Found!";
+            }
         }
 
         private void button_disable_Click(object sender, EventArgs e)
         {
-            //serverThread.Abort();
             _server.Stop();
             _logger.LogState(Logger.State.Disabled);
 
@@ -77,6 +83,7 @@ namespace ControlAgent
         {
             Config config = new Config();
             config.ShowDialog();
+            config.Dispose();
         }
 
         private void ToggleUiState(State state)
@@ -88,12 +95,14 @@ namespace ControlAgent
                     ipDropdown.Enabled = true;
                     portSelector.Enabled = true;
                     button_disable.Enabled = false;
+                    button_configure.Enabled = true;
                     break;
                 case State.Disable:
                     button_disable.Enabled = true;
                     ipDropdown.Enabled = false;
                     portSelector.Enabled = false;
                     button_enable.Enabled = false;
+                    button_configure.Enabled = false;
                     break;
             }
         }

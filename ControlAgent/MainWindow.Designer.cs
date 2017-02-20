@@ -78,9 +78,9 @@
             this.label_statusdetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_statusdetails.Location = new System.Drawing.Point(112, 9);
             this.label_statusdetails.Name = "label_statusdetails";
-            this.label_statusdetails.Size = new System.Drawing.Size(95, 17);
+            this.label_statusdetails.Size = new System.Drawing.Size(148, 17);
             this.label_statusdetails.TabIndex = 3;
-            this.label_statusdetails.Text = "This is a label";
+            this.label_statusdetails.Text = "Status Info Goes Here";
             // 
             // ipDropdown
             // 

@@ -20,12 +20,6 @@ namespace ControlAgent
         private StreamReader _reader;
         private StreamWriter _writer;
 
-        private readonly List<string> _apiKeys = new List<string>()
-        {
-            //TODO this feels really sketchy, most definitely can and should be done better
-            "testAPIkey1234"
-        };
-
         public Server(string ip, int port)
         {
             _listener = new TcpListener(IPAddress.Parse(ip), port);
@@ -62,7 +56,7 @@ namespace ControlAgent
                     string[] request = requestRaw.Split(delim, StringSplitOptions.None);
 
                     //Check if API key is valid
-                    if (_apiKeys.Contains(request[0]))
+                    if (Config.GetApiKeys().Contains(request[0]))
                     {
                         //Valid API key sent
                         Commands.Command command = (Commands.Command)Enum.Parse(typeof(Commands.Command), request[1]);

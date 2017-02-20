@@ -1,42 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ControlAgent
 {
     public partial class Config : Form
     {
-        private List<string> _apiKeys;
+        private static readonly List<string> ApiKeys = new List<string>();
 
         public Config()
         {
             InitializeComponent();
-            _apiKeys = new List<string>()
-            {
-                "testAPIkey1234"
-            };
             PopulateKeyList();
+        }
+
+        public static bool ApiKeyExists()
+        {
+            if (ApiKeys.Count == 0 || ApiKeys == null)
+            {
+                return false;
+            }
+            return true;
         }
 
         private void button_add_new_api_key_Click(object sender, EventArgs e)
         {
-            _apiKeys.Add(new_api_key.Text);
+            ApiKeys.Add(new_api_key.Text);
+            new_api_key.Text = "";
+            PopulateKeyList();
         }
 
         private void button_remove_api_key_Click(object sender, EventArgs e)
         {
+            foreach (var obj in api_key_list.SelectedItems)
+            {
+                ApiKeys.Remove(obj.ToString());
+            }
+            PopulateKeyList();
+        }
 
+        public static List<string> GetApiKeys()
+        {
+            return ApiKeys;
         }
 
         private void PopulateKeyList()
         {
-            foreach (string key in _apiKeys)
+            api_key_list.Items.Clear();
+            foreach (string key in ApiKeys)
             {
                 api_key_list.Items.Add(key);
             }
